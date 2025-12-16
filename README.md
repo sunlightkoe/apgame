@@ -274,8 +274,6 @@
             // 專業級：從每個分類多抽，確保總數達到 20 題
             draw: { 'clear': 5, 'adjust': 5, 'supplement': 6, 'shape': 2, 'final': 2 }
         }
-    };
-};
     // --- 擴充的完整題目庫 (FULL QUESTION BANK) ---
     // 總共 20 題 (清x5, 調x5, 補x6, 朔x2, Final x2)
     const fullQuestionBank = {
