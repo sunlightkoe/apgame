@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+<亞健康公主變黑變胖了,需要你來拯救!>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>愛樂唯：騎士的體內淨化之旅 (計時挑戰)</title>
+    <title>愛樂唯：騎士的拯救公主之旅 (計時挑戰)</title>
     <style>
         /* CSS 樣式 */
         :root {
