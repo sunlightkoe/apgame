@@ -1,4 +1,4 @@
-<!公主怎麼了,需要你來拯救!>
+<!公主怎麼了?快來拯救她!>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -144,22 +144,53 @@
             line-height: 1.6;
             font-weight: 500;
         }
-        .product-image-placeholder {
-            height: 120px;
-            width: 120px;
-            background: #eee;
-            border-radius: 10px;
-            margin-bottom: 20px;
+        /* 圖片和敵人資訊的容器樣式 */
+        .question-info {
             display: flex;
-            flex-direction: column;
+            flex-wrap: wrap; /* 允許在小螢幕上換行 */
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 20px;
+            gap: 20px; 
+        }
+        
+        /* 圖片佔位符樣式 */
+        #productPlaceholder {
+            height: auto;
+            width: auto;
+            max-width: 150px; 
+            max-height: 150px;
+            display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
-            color: #777;
-            border: 1px dashed #ccc;
-            text-align: center;
-            padding: 5px;
         }
+        
+        #productPlaceholder img {
+            max-width: 100%;
+            max-height: 150px;
+            border-radius: 8px;
+            object-fit: contain; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .enemy-placeholder {
+            min-width: 120px;
+            text-align: left;
+            padding: 10px;
+            border-left: 2px solid #eee;
+        }
+        .enemy-placeholder div {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--color-knight);
+        }
+        .enemy-placeholder span {
+            font-size: 0.9rem;
+            color: #777;
+            font-weight: 600;
+        }
+        
         .feedback {
             display: none;
             margin-top: 25px;
@@ -186,6 +217,20 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 響應式調整 */
+        @media (max-width: 600px) {
+            .question-info {
+                flex-direction: column; /* 小螢幕下圖片和文字垂直排列 */
+                gap: 15px;
+            }
+            .enemy-placeholder {
+                border-left: none; /* 移除垂直分隔線 */
+                border-top: 2px solid #eee; /* 改為水平分隔線 */
+                padding-top: 15px;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -224,10 +269,12 @@
         <div id="animationArea" class="character-display knight">⚔️</div>
         <span id="levelBadge" class="level-badge">關卡載入中...</span>
         
-        <div id="productPlaceholder" class="product-image-placeholder">
-            [產品圖片佔位 - 可替換為產品圖 URL]
+        <div class="question-info">
+            <div id="productPlaceholder">
+                </div>
+            <div id="enemyPlaceholder" class="enemy-placeholder">
+                </div>
         </div>
-
         <div id="questionText" class="question-text">題目載入中...</div>
         <div id="optionsContainer" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
             </div>
@@ -250,7 +297,7 @@
 
 <script>
     // --- 配置常數 ---
-    const TIMER_LIMIT = 15; // 倒數計時改為 15 秒
+    const TIMER_LIMIT = 15; 
     const MAX_SCORE_PER_QUESTION = 10;
 
     // --- 難度配置 ---
@@ -271,19 +318,18 @@
             count: 20,
             titlePerfect: "愛樂唯日光騎士",
             titleGreat: "愛樂唯專家",
-            // 專業級：從每個分類多抽，確保總數達到 20 題
             draw: { 'clear': 5, 'adjust': 5, 'supplement': 6, 'shape': 2, 'final': 2 }
         }
     };
 
-    // --- 擴充的完整題目庫 (FULL QUESTION BANK) ---
-    // 總共 20 題 (清x5, 調x5, 補x6, 朔x2, Final x2)
+    // --- 擴充的完整題目庫 (FULL QUESTION BANK) 🚨 已更新產品名稱 ---
     const fullQuestionBank = {
         // --- Level 1: 清 (Auro + Down Bliss) --- 
         'clear': [
             {
                 level: "第一關：淨化森林 (清)", levelColor: "var(--color-clear)",
                 product: "Auro 極淨纖果粉", enemy: "宿便怪", animation: "🐛",
+                imageFile: "clear2.jpg", 
                 question: "極淨纖果粉中，能幫助維持消化道機能的珍貴草本精華是？",
                 options: ["綠咖啡", "望江南和決明子", "膠原蛋白", "維生素 C"],
                 correct: 1, explanation: "✅ 正確！**望江南和決明子**等草本精華幫助維持消化道機能，讓排便更順暢。"
@@ -291,6 +337,7 @@
             {
                 level: "第一關：淨化森林 (清)", levelColor: "var(--color-clear)",
                 product: "Auro 極淨纖果粉", enemy: "積食怪", animation: "⚔️",
+                imageFile: "clear2.jpg", 
                 question: "極淨纖果粉中，100%由非基因改造大豆做基底，能幫助營養素吸收的美國專利成分是什麼？",
                 options: ["MBP 鈣結合蛋白", "藤黃果 HCA", "AES 綜合酵素", "L-茶胺酸"],
                 correct: 2, explanation: "✅ 正確！**AES 綜合酵素**能幫助營養素吸收，減少過度積食的負擔。"
@@ -298,25 +345,26 @@
             {
                 level: "第一關：淨化森林 (清)", levelColor: "var(--color-clear)",
                 product: "Auro 極淨纖果粉", enemy: "素食疑慮", animation: "🌿",
+                imageFile: "clear2.jpg", 
                 question: "極淨纖果粉的素食屬性是屬於哪一類？",
                 options: ["全素", "純素", "奶素", "蛋奶素"],
                 correct: 2, explanation: "✅ 正確！極淨纖果粉為**奶素**，不適合全素食者。"
             },
-            // **更新題：昕悅活力飲 - 能量成分**
             {
                 level: "第一關：淨化森林 (清)", levelColor: "var(--color-clear)",
                 product: "Down Bliss 昕悅活力飲", enemy: "精神不濟", animation: "☕",
+                imageFile: "clear1.jpg", 
                 question: "昕悅活力飲中，被稱為「巴西國飲」且富含天然咖啡因，能滋補強身、增進效率的成分是？",
                 options: ["綠茶萃取", "巴西瓜拿納果", "瑪卡", "薑黃素"],
                 correct: 1, explanation: "✅ 正確！**巴西瓜拿納果**能滋補強身、增強體力，富含天然咖啡因可增進效率。"
             },
-            // **新增題：昕悅活力飲 - 代謝成分**
             {
                 level: "第一關：淨化森林 (清)", levelColor: "var(--color-clear)",
                 product: "Down Bliss 昕悅活力飲", enemy: "代謝緩慢", animation: "🍊",
+                imageFile: "clear1.jpg", 
                 question: "昕悅活力飲中，富含川陳皮素、橘紅素、辛弗林等，幫助促進新陳代謝，適合關注體態管理者的成分是什麼？",
                 options: ["專利紅橙萃取", "專利柑橘幼果萃取", "專利黑胡椒萃取", "專利藤黃果萃取"],
-                correct: 1, explanation: "✅ 正確！**專利柑橘幼果萃取**富含川陳皮素、橘紅素、辛弗林等，有助於促進新陳代謝。"
+                correct: 1, explanation: "✅ 正確！**專利柑橘幼果萃取**富含川陳皮素、橘紅素、辛弗林等，有助於促進新陳代謝，適合關注體態管理者使用。"
             }
         ],
         // --- Level 2: 調 (PurBio) --- 
@@ -324,6 +372,7 @@
             {
                 level: "第二關：平衡花園 (調)", levelColor: "var(--color-adjust)",
                 product: "PurBio 澄熙益生菌", enemy: "搞怪軍團 (壞菌)", animation: "🦠",
+                imageFile: "adjust.jpg", 
                 question: "PurBio 澄熙益生菌含有幾種具身分履歷的強大菌株，以全方位調整體質？",
                 options: ["5 種", "10 種", "17 種", "25 種"],
                 correct: 2, explanation: "✅ 正確！**17 種**益菌戰隊能改變細菌叢生態，促進健康維持。"
@@ -331,6 +380,7 @@
             {
                 level: "第二關：平衡花園 (調)", levelColor: "var(--color-adjust)",
                 product: "PurBio 澄熙益生菌", enemy: "胃酸威脅", animation: "🛡️",
+                imageFile: "adjust.jpg", 
                 question: "PurBio 澄熙益生菌採用的技術，目的是保護菌種能成功通過胃酸，提高定殖率，請問這是哪種技術？",
                 options: ["冷凍乾燥技術", "微粒包覆技術", "超高溫瞬時滅菌", "天然發酵法"],
                 correct: 1, explanation: "✅ 正確！**微粒包覆技術**能保護菌種，讓益生菌精準送達腸道。"
@@ -338,6 +388,7 @@
              {
                 level: "第二關：平衡花園 (調)", levelColor: "var(--color-adjust)",
                 product: "PurBio 澄熙益生菌", enemy: "甜味誘惑", animation: "🍎",
+                imageFile: "adjust.jpg", 
                 question: "澄熙益生菌的甜味主要來自哪種經美國 FDA 認定為 GRAS 等級的成分？",
                 options: ["果寡糖", "木糖醇", "甜菊糖苷", "天然香料"],
                 correct: 1, explanation: "✅ 正確！甜味主要來自於**木糖醇**與天然香料。木糖醇熱量低且被美國 FDA 認定為 GRAS 等級。"
@@ -345,14 +396,15 @@
              {
                 level: "第二關：平衡花園 (調)", levelColor: "var(--color-adjust)",
                 product: "PurBio 澄熙益生菌", enemy: "素食疑慮", animation: "🥦",
+                imageFile: "adjust.jpg", 
                 question: "關於澄熙益生菌，哪項描述是正確的？",
                 options: ["含有蛋奶製品", "為純素可食", "含有動物性成分", "為奶素食品"],
                 correct: 1, explanation: "✅ 正確！澄熙益生菌不含動物性成分，不含蛋奶製品，為**純素可食**。"
             },
-            // **新增題：澄熙益生菌 - 用量**
             {
                 level: "第二關：平衡花園 (調)", levelColor: "var(--color-adjust)",
                 product: "PurBio 澄熙益生菌", enemy: "用量困惑", animation: "🥄",
+                imageFile: "adjust.jpg", 
                 question: "3歲以上兒童建議一天一包，請問成人建議量與加強建議量分別是多少？",
                 options: ["成人：每日睡前 1 包；加強：每日睡前 2 包", "成人：每日三餐飯前 1 包；加強：每日三餐飯前 2 包", "成人：每日一餐飯後 1 包；加強：每日兩餐飯後 1 包", "成人：每日 2 包；加強：每日 3 包"],
                 correct: 1, explanation: "✅ 正確！成人建議量為**每日三餐飯前 1 包**，加強建議量為**每日三餐飯前 2 包**。"
@@ -360,53 +412,53 @@
         ],
         // --- Level 3: 補 (Flor + Etern) --- 
         'supplement': [
-            // Flor 亮妍嬌源飲 
             {
                 level: "第三關：能量泉源 (補)", levelColor: "var(--color-supplement)",
                 product: "Flor 亮妍嬌源飲", enemy: "乾燥細紋", animation: "💖",
+                imageFile: "supplement1.jpg", 
                 question: "亮妍嬌源飲中，一包蘊含多少毫克的魚膠原蛋白，並使用酵素水解技術提高吸收效率？",
                 options: ["1,000 毫克", "5,000 毫克", "10,000 毫克", "2,500 毫克"],
-                correct: 1, explanation: "✅ 正確！一包亮妍嬌源飲蘊含 **5,000 毫克**高品質魚膠原蛋白。"
+                correct: 1, explanation: "✅ 正確！一包亮妍嬌源飲蘊含 **5,000 毫克**高品質魚膠原蛋白，運用酵素水解技術提高身體吸收效率。"
             },
-            // Etern 恆芯營養粉 
             {
                 level: "第三關：能量泉源 (補)", levelColor: "var(--color-supplement)",
                 product: "Etern 恆芯營養粉", enemy: "骨骼健康", animation: "🦴",
+                imageFile: "supplement2.jpg", 
                 question: "恆芯營養粉中，來自牛乳萃取物，能輔助維持骨骼健康的活性胜肽成分是什麼？",
                 options: ["高鈣乳酪", "牛奶活性胜肽MBP", "酪梨大豆萃取物", "維生素 K2"],
                 correct: 1, explanation: "✅ 正確！**牛奶活性胜肽MBP**適合輔助日常營養補充與維持骨骼健康。"
             },
-            // 亮妍嬌源飲
             {
                 level: "第三關：能量泉源 (補)", levelColor: "var(--color-supplement)",
                 product: "Flor 亮妍嬌源飲", enemy: "素顏不美", animation: "✨",
+                imageFile: "supplement1.jpg", 
                 question: "哪種專利益生菌，擁有 8 項專利與 3 篇期刊發表，是增添肌膚水潤與提升關鍵力的主要成分？",
-                options: ["專利燕窩酸益生菌", "嗜酸乳桿菌", "專利自產玻尿酸益生菌 (嗜熱鏈球菌)", "比菲德氏菌"],
-                correct: 2, explanation: "✅ 正確！**專利自產玻尿酸益生菌 (嗜熱鏈球菌)** 榮獲國際發明展銀獎，能增添肌膚水潤與提升關鍵力。"
+                options: ["專利燕窩酸益生菌", "專利自產玻尿酸益生菌 (嗜熱鏈球菌)", "嗜酸乳桿菌", "比菲德氏菌"],
+                correct: 1, explanation: "✅ 正確！**專利自產玻尿酸益生菌 (嗜熱鏈球菌)** 榮獲國際發明展銀獎，能增添肌膚水潤與提升關鍵力。"
             },
-            // 恆芯營養粉
             {
                 level: "第三關：能量泉源 (補)", levelColor: "var(--color-supplement)",
                 product: "Etern 恆芯營養粉", enemy: "營養不均", animation: "🏋️",
+                imageFile: "supplement2.jpg", 
                 question: "恆芯營養粉的優質「動植物雙蛋白」互補配方是？",
                 options: ["酪蛋白＋豌豆蛋白", "乳清蛋白＋大豆蛋白＋白胺酸", "蛋清蛋白＋米蛋白", "魚膠原＋大豆蛋白"],
                 correct: 1, explanation: "✅ 正確！**乳清蛋白＋大豆蛋白＋白胺酸**組成的雙蛋白複方，提供優質營養，吸收佳且飽足久。"
             },
-            // **新增題：恆芯營養粉 - 草本成分**
             {
                 level: "第三關：能量泉源 (補)", levelColor: "var(--color-supplement)",
                 product: "Etern 恆芯營養粉", enemy: "行動力下降", animation: "🌿",
+                imageFile: "supplement2.jpg", 
                 question: "恆芯營養粉中，除了鈣和維生素外，還添加了哪兩種植物素材，有助於調節生理機能？",
-                options: ["人參、靈芝", "枸杞、紅棗", "甘藷萃取物、穿心蓮", "薑黃、肉桂"],
-                correct: 2, explanation: "✅ 正確！**甘藷萃取物**與**穿心蓮**是常見的植物素材，可協助維持健康、調整體質。"
+                options: ["人參、靈芝", "甘藷萃取物、穿心蓮", "枸杞、紅棗", "薑黃、肉桂"],
+                correct: 1, explanation: "✅ 正確！**甘藷萃取物**與**穿心蓮**可協助維持健康、調整體質。"
             },
-            // **新增題：亮妍嬌源飲 - 甜味**
             {
                 level: "第三關：能量泉源 (補)", levelColor: "var(--color-supplement)",
                 product: "Flor 亮妍嬌源飲", enemy: "甜食渴望", animation: "🍬",
+                imageFile: "supplement1.jpg", 
                 question: "亮妍嬌源飲的甜味來自哪種熱量低的代糖，被美國 FDA 認定為 GRAS (最高安全規格)？",
                 options: ["阿斯巴甜", "甜菊糖苷", "蔗糖素", "果糖"],
-                correct: 1, explanation: "✅ 正確！甜味來自於草本萃取的**甜菊糖苷**，甜度高熱量低，符合最高安全規格。"
+                correct: 1, explanation: "✅ 正確！甜味來自於草本萃取的**甜菊糖苷**，符合最高安全規格GRAS。"
             }
         ],
         // --- Level 4: 朔 (Spork) --- 
@@ -414,32 +466,35 @@
             {
                 level: "第四關：塑形神殿 (朔)", levelColor: "var(--color-shape)",
                 product: "Spork 閃朔蜜桃飲", enemy: "體脂魔王", animation: "🔥",
+                imageFile: "shape1.jpg", 
                 question: "閃朔蜜桃飲系列中，哪種成分含有豐富 HCA（羥基檸檬酸），能幫助消化並降低對食物的慾望？",
                 options: ["綠咖啡萃取", "藤黃果萃取", "葡萄皮萃取", "兒茶素"],
                 correct: 1, explanation: "✅ 正確！**藤黃果萃取物**含有豐富 HCA，是飲食管控的好幫手。"
             },
-            // 朔奶茶飲
             {
                 level: "第四關：塑形神殿 (朔)", levelColor: "var(--color-shape)",
-                product: "Spork 朔奶茶飲", enemy: "腹部堆積", animation: "☕",
-                question: "朔奶茶飲中特有的哪種成分，具有調節生理機能、減少腹部堆積的功效？",
+                product: "Spork 閃朔奶茶飲", // 🚨 修正：朔奶茶飲 改為 閃朔奶茶飲
+                enemy: "腹部堆積", animation: "☕",
+                imageFile: "shape2.png", 
+                question: "閃朔奶茶飲中特有的哪種成分，具有調節生理機能、減少腹部堆積的功效？",
                 options: ["綠咖啡萃取物", "藤黃果萃取物", "白藜蘆醇", "川芎萃取物"],
-                correct: 3, explanation: "✅ 正確！**川芎萃取物**能調節生理機能，幫助身體輕盈不卡水。"
+                correct: 3, explanation: "✅ 正確！**川芎萃取物**能調節生理機能，減少腹部堆積，幫助身體輕盈不卡水。"
             }
         ],
         // --- Level 5: 最終智慧 (餐量管理) --- 
         'final': [
-             // **修正後的題目 (原遺漏逗號)**
              {
                 level: "最終關：大師的智慧", levelColor: "var(--color-knight)",
                 product: "愛樂唯餐量管理理念", enemy: "錯誤觀念", animation: "🧘",
+                imageFile: "clear1.jpg", // 沿用 clear1 作為代表圖
                 question: "愛樂唯餐量管理理念的核心口訣是「吃肉肉減肉肉．喝神飲減肉肉．____________」？",
                 options: ["多運動減肉肉", "不用動減肉肉", "少吃澱粉減肉肉", "不吃肉減肉肉"],
                 correct: 1, explanation: "✅ 正確！愛樂唯餐量管理口訣為：**吃肉肉減肉肉．喝神飲減肉肉．不用動減肉肉**。"
-            }, // <--- 關鍵修復：這裡補上了逗號 (,)
+            }, 
             {
                 level: "最終關：大師的智慧", levelColor: "var(--color-knight)",
                 product: "愛樂唯餐量管理理念", enemy: "錯誤觀念", animation: "🍽️",
+                imageFile: "clear2.jpg", // 沿用 clear2 作為代表圖
                 question: "愛樂唯餐量管理的目標是把健康變簡單，請問下列哪一項是其中關鍵理念？",
                 options: ["多樣化的產品線", "產品簡單化更能融入生活", "專注於單一功能", "強調複雜的營養學"],
                 correct: 1, explanation: "✅ 正確！產品簡單化更能融入生活，讓忙碌的生活也能輕鬆維持健康。" 
@@ -469,6 +524,7 @@
     const nextBtn = document.getElementById('nextBtn');
     const progressFill = document.getElementById('progressFill');
     const productPlaceholder = document.getElementById('productPlaceholder');
+    const enemyPlaceholder = document.getElementById('enemyPlaceholder');
     const animationArea = document.getElementById('animationArea');
     const timerDisplay = document.getElementById('timerDisplay'); 
 
@@ -495,31 +551,26 @@
             timerDisplay.textContent = timeLeft;
 
             if (timeLeft <= 5) {
-                // 剩下 5 秒開始變紅色警示
                 timerDisplay.style.color = '#ff0000';
             } else if (timeLeft <= 10) {
-                 // 剩下 10 秒變黃色警示
                 timerDisplay.style.color = 'var(--color-adjust)';
             }
-
 
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
                 timerDisplay.textContent = '時間到！';
-                // 如果時間到還沒作答，強制執行 checkAnswer (傳入 -1 代表未作答)
                 if (!hasAnswered) {
                     checkAnswer(-1); 
                 }
             }
-        }, 1000); // 每秒執行
+        }, 1000); 
     }
 
-    // --- 核心變動：根據難度選擇抽取題目並開始遊戲 ---
+    // --- 核心：根據難度選擇抽取題目並開始遊戲 ---
     function startGame(difficulty) {
         selectedDifficulty = difficulty;
         const settings = difficultySettings[difficulty];
         
-        // 畫面切換
         startScreen.classList.add('hidden');
         gameScreen.classList.remove('hidden');
         
@@ -528,20 +579,21 @@
         currentQuestions = []; 
         maxGameScore = settings.count * MAX_SCORE_PER_QUESTION;
 
-        // 1. 根據難度設定，從每個主題庫中隨機抽取題目
         const drawCounts = settings.draw;
         
+        // 1. 根據難度設定，從每個主題庫中隨機抽取題目
         for (const key in drawCounts) {
             const count = drawCounts[key];
-            const shuffledBank = shuffleArray([...fullQuestionBank[key]]); 
-            currentQuestions.push(...shuffledBank.slice(0, count)); 
+            if (fullQuestionBank[key] && Array.isArray(fullQuestionBank[key])) {
+                const shuffledBank = shuffleArray([...fullQuestionBank[key]]); 
+                currentQuestions.push(...shuffledBank.slice(0, count)); 
+            }
         }
         
-        // 確保總題庫的順序是隨機的
+        // 2. 確保總題庫的順序是隨機的
         currentQuestions = shuffleArray(currentQuestions);
 
-
-        // 2. 隨機洗牌選項
+        // 3. 隨機洗牌選項
         currentQuestions = currentQuestions.map(q => {
             const originalOptions = q.options;
             const correctText = originalOptions[q.correct];
@@ -556,19 +608,19 @@
             };
         });
 
+        // 啟動第一道題目
         showQuestion();
     }
     
     // --- 顯示題目 ---
     function showQuestion() {
         isAnswering = true;
-        hasAnswered = false; // 重設作答狀態
+        hasAnswered = false; 
         feedbackArea.style.display = 'none';
         
         const buttons = optionsContainer.querySelectorAll('button');
         buttons.forEach(btn => btn.remove());
         
-        // 清除前一題的計時器 (如果有)
         if (timerInterval) {
             clearInterval(timerInterval);
         }
@@ -580,9 +632,14 @@
         levelBadge.style.backgroundColor = q.levelColor;
         questionText.textContent = q.question;
         
-        animationArea.textContent = q.animation;
-        // 產品圖片佔位符，顯示產品名稱和敵人
-        productPlaceholder.innerHTML = `<div style="font-size: 0.9rem; font-weight: bold; color: ${q.levelColor};">${q.product}</div><div style="font-size: 0.7rem; color: #777;">(敵人/問題點: ${q.enemy})</div>`;
+        // 注入圖片
+        productPlaceholder.innerHTML = `<img src="${q.imageFile}" alt="${q.product}" onerror="this.onerror=null;this.src='//:0'" />`;
+        
+        // 注入敵人/問題點資訊 (敵人顯示在圖片右邊)
+        enemyPlaceholder.innerHTML = `
+            <div>${q.product}</div>
+            <span>(敵人/問題點: ${q.enemy})</span>
+        `;
         
         // 更新進度條
         const progress = (currentQuestionIndex / currentQuestions.length) * 100;
@@ -598,16 +655,14 @@
             optionsContainer.appendChild(btn);
         });
 
-        // 啟動計時器
         startTimer();
     }
 
-    // --- 檢查答案 (處理時間到未作答) ---
+    // --- 檢查答案 ---
     function checkAnswer(selectedIndex) {
         if (!isAnswering && selectedIndex !== -1) return; 
         if (hasAnswered && selectedIndex !== -1) return;
 
-        // 立即停止計時器
         clearInterval(timerInterval);
         isAnswering = false;
         hasAnswered = true;
@@ -615,16 +670,14 @@
         const q = currentQuestions[currentQuestionIndex];
         const isCorrect = selectedIndex === q.correct;
         
-        // 如果是時間到且未作答
         if (selectedIndex === -1) {
              feedbackTitle.textContent = `⏰ 時間到！`;
              feedbackText.innerHTML = `<strong>遺憾！</strong>您未能在 ${TIMER_LIMIT} 秒內作答，本題不計分。正確答案是：${q.options[q.correct]}`;
              feedbackArea.className = `feedback wrong fade-in`;
         } else {
-            // 正常作答
             const buttons = optionsContainer.querySelectorAll('button');
             buttons.forEach((btn, idx) => {
-                btn.disabled = true; // 禁用所有按鈕
+                btn.disabled = true; 
                 if (idx === q.correct) {
                     btn.style.backgroundColor = 'var(--color-supplement)'; 
                     btn.style.color = 'white';
@@ -648,7 +701,6 @@
             }
         }
         
-        // 確保結果顯示
         feedbackArea.style.display = 'block';
 
         if (currentQuestionIndex === currentQuestions.length - 1) {
@@ -679,29 +731,25 @@
         progressFill.style.width = '100%';
 
         let title = '';
-        // 滿分 (100%)
         if (score === maxGameScore) {
             title = settings.titlePerfect;
             finalCharacterDisplay.textContent = '👸🏼'; 
             finalCharacterDisplay.className = 'character-display princess-final fade-in';
             resultMessage.innerHTML = `恭喜！您以 **${maxGameScore} 分** 滿分，獲得<br>【**${title}**】稱號！公主已恢復光彩！`;
         } 
-        // 高分 (≥ 70%)
         else if (score >= maxGameScore * 0.7) {
             title = settings.titleGreat;
             finalCharacterDisplay.textContent = '👸🏽';
             finalCharacterDisplay.className = 'character-display princess-initial fade-in';
             resultMessage.innerHTML = `表現優異！您獲得【**${title}**】稱號！<br>最終得分：${score} 分，公主正在好轉中！`;
         } 
-        // 及格以下 (< 70%)
         else {
             title = "養生學徒";
             finalCharacterDisplay.textContent = '👸🏿';
             finalCharacterDisplay.className = 'character-display princess-initial fade-in';
-            resultMessage.innerHTML = `您是【**${title}**】，知識還需磨練！<br>最終得分：${score} 分，公主狀態有改善，但仍需努力！`;
+            resultMessage.innerHTML = `您是【**${title}**】！<br>最終得分：${score} 分，公主狀態有改善，但仍需努力！`;
         }
 
-        // 分數動畫
         let currentScore = 0;
         finalScoreElement.textContent = '0';
         const interval = setInterval(() => {
@@ -718,10 +766,7 @@
         resultScreen.classList.add('hidden');
         startScreen.classList.remove('hidden');
         if (timerInterval) {
-            clearInterval(timerInterval); // 確保重新開始時清除計時器
+            clearInterval(timerInterval); 
         }
     }
 </script>
-
-</body>
-</html>
