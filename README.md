@@ -211,7 +211,7 @@
             簡單 (10 題 / 100 分) - 虹光之路
         </button>
         <button class="btn difficulty-btn" onclick="startGame('medium')">
-            有挑戰 (15 題 / 150 分) - 極光之路
+            挑戰 (15 題 / 150 分) - 極光之路
         </button>
         <button class="btn difficulty-btn" onclick="startGame('hard')">
             專業 (20 題 / 200 分) - 日光之路
@@ -275,7 +275,41 @@
             draw: { 'clear': 5, 'adjust': 5, 'supplement': 6, 'shape': 2, 'final': 2 }
         }
     };
-
+    // 範例：請在您的程式碼中找到類似的產品定義
+    "PuraBio": {
+        name: "澄熙益生菌 PurαBio",
+        [cite_start]description: "17種益菌菌株為您及家人打造完美防護，維持消化道機能，改變細菌叢生態。", // [cite: 58, 59] (根據您的文件)
+        // 🚨 新增圖片路徑欄位
+        image: "澄熙益生菌-DM-2.jpg" 
+    },
+    "Auro": {
+        name: "極淨纖果粉 Auro α",
+        [cite_start]description: "結合了草本植物、複合纖維和專利酵素，能讓排便順暢。", // [cite: 32] (根據您的文件)
+        // 🚨 新增圖片路徑欄位
+        image: "極淨纖果粉DM-4.jpg" 
+    },
+    // 請依照此格式，將所有產品都加入對應的圖片檔名
+    "Flora": {
+        name: "亮妍嬌源飲 Florα",
+        [cite_start]description: "彈力潤澤的青春肌密，一包蘊含5,000毫克膠原蛋白，專為30+以上設計配方。", // [cite: 78, 79] (根據您的文件)
+        image: "Adobe Express - file (1).png" 
+    },
+    "Eterna": {
+        name: "恆芯營養粉 Eterna",
+        [cite_start]description: "專為日常補養、熟齡保健打造的營養複方，提供「喝的營養照護方案」。", // [cite: 115] (根據您的文件)
+        image: "ALFAWISE_網站恆芯-02-scaled.jpg" 
+    },
+    "Spark": {
+        name: "閃朔蜜桃飲 Spαrk",
+        [cite_start]description: "獨家代謝配方，激發身體潛能，加速新陳代謝，減少對食物的渴望。", // [cite: 129] (根據您的文件)
+        image: "閃朔蜜桃飲3.jpg" 
+    },
+    "DawnBliss": {
+        name: "昕悅活力飲 DαwnBliss",
+        [cite_start]description: "維持整天活力的美體飲品，蘊含花青素與維生素B，喚醒身體、調節機能。", // [cite: 4] (根據您的文件)
+        image: "Adobe Express - file (1).png" 
+    }
+};
     // --- 擴充的完整題目庫 (FULL QUESTION BANK) ---
     // 總共 20 題 (清x5, 調x5, 補x6, 朔x2, Final x2)
     const fullQuestionBank = {
