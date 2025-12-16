@@ -1,0 +1,17 @@
+{
+  "简单": [
+    { "q": "餐量管理強調不用動減肉肉？", "choices": [ {"text":"可在特定情況下不運動","correct":true}, {"text":"必須每天高強度運動","correct":false}, {"text":"完全不可運動","correct":false}, {"text":"只需睡覺即可","correct":false} ], "explain": "若平常無運動習慣可先調整飲食" },
+    { "q": "餐量管理可以與清調補朔結合？", "choices": [ {"text":"可以結合","correct":true}, {"text":"不可結合","correct":false}, {"text":"只可與清結合","correct":false}, {"text":"只可與朔結合","correct":false} ], "explain": "與四階段策略搭配形成完整方案" },
+    { "q": "管理重點是否要吃原型食物？", "choices": [ {"text":"建議原型食物","correct":true}, {"text":"建議高加工食品","correct":false}, {"text":"建議高糖甜食","correct":false}, {"text":"建議零食代餐","correct":false} ], "explain": "加工食物添加劑較多" }
+  ],
+  "挑战": [
+    { "q": "餐量管理核心在增肌減脂？", "choices": [ {"text":"增肌與減脂","correct":true}, {"text":"增糖與增脂","correct":false}, {"text":"完全不吃","correct":false}, {"text":"只喝甜飲","correct":false} ], "explain": "合理控制與循序調整" },
+    { "q": "是否建議使用餐盤法視覺化？", "choices": [ {"text":"建議","correct":true}, {"text":"不建議","correct":false}, {"text":"僅建議手畫圖","correct":false}, {"text":"僅建議口述","correct":false} ], "explain": "視覺化有助行為落地" },
+    { "q": "活動檔案2512提供實務模板？", "choices": [ {"text":"提供模板","correct":true}, {"text":"不提供","correct":false}, {"text":"僅提供圖片","correct":false}, {"text":"僅提供音訊","correct":false} ], "explain": "作為培訓與落地參考" }
+  ],
+  "专业": [
+    { "q": "餐量管理以份量視覺化工具落地？", "choices": [ {"text":"使用視覺化工具","correct":true}, {"text":"完全不用工具","correct":false}, {"text":"只用文字記錄","correct":false}, {"text":"只用語音提醒","correct":false} ], "explain": "餐盤與手掌法皆可" },
+    { "q": "碳水蛋白脂肪比例需個人化？", "choices": [ {"text":"需個人化","correct":true}, {"text":"固定不變","correct":false}, {"text":"只調整碳水","correct":false}, {"text":"只調整脂肪","correct":false} ], "explain": "依體成分與目標調整" },
+    { "q": "2512檔案提供進階範例？", "choices": [ {"text":"提供進階範例","correct":true}, {"text":"僅基礎示例","correct":false}, {"text":"僅口號","correct":false}, {"text":"僅插圖","correct":false} ], "explain": "作為活動策略與案例" }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "简单": [
+    { "q": "亮妍膠原飲與肌膚彈性相關？", "choices": [ {"text":"與彈性相關","correct":true}, {"text":"僅與口感相關","correct":false}, {"text":"僅與顏色相關","correct":false}, {"text":"與皮膚無關","correct":false} ], "explain": "膠原蛋白與維生素C有助膠原生成" },
+    { "q": "恆芯營養偏向能量補給？", "choices": [ {"text":"偏向能量補給","correct":true}, {"text":"僅增甜","correct":false}, {"text":"僅增酸","correct":false}, {"text":"僅補水","correct":false} ], "explain": "多元營養基底支持日常能量" },
+    { "q": "補階段重點在補充所需？", "choices": [ {"text":"補充必需養分","correct":true}, {"text":"減少營養攝入","correct":false}, {"text":"全然不吃","correct":false}, {"text":"只吃糖","correct":false} ], "explain": "補強化所需養份的補給" }
+  ],
+  "挑战": [
+    { "q": "膠原與維他命C協同機轉重要？", "choices": [ {"text":"重要","correct":true}, {"text":"不重要","correct":false}, {"text":"完全無關","correct":false}, {"text":"只在夜間重要","correct":false} ], "explain": "C為膠原合成輔助因子" },
+    { "q": "恆芯是否適合作為早餐基底？", "choices": [ {"text":"適合","correct":true}, {"text":"完全不適合","correct":false}, {"text":"只適合晚餐","correct":false}, {"text":"只適合宵夜","correct":false} ], "explain": "作為能量起始的營養補給" },
+    { "q": "補階段是否包含恢復與修復？", "choices": [ {"text":"包含","correct":true}, {"text":"不包含","correct":false}, {"text":"只包含增肌","correct":false}, {"text":"只包含減脂","correct":false} ], "explain": "補兼顧恢復與修復需求" }
+  ],
+  "专业": [
+    { "q": "膠原胜肽較大分子吸收效率高？", "choices": [ {"text":"否，小分子效率高","correct":true}, {"text":"是，大分子效率高","correct":false}, {"text":"皆同樣高","correct":false}, {"text":"皆無法吸收","correct":false} ], "explain": "小分子胜肽吸收較佳" },
+    { "q": "恆芯作為訓練前補給可行？", "choices": [ {"text":"可行","correct":true}, {"text":"不可行","correct":false}, {"text":"僅在低溫下可行","correct":false}, {"text":"僅在空腹可行","correct":false} ], "explain": "能量與氨基酸基底支持訓練" },
+    { "q": "補階段需依個人缺口精準補充？", "choices": [ {"text":"需精準補充","correct":true}, {"text":"隨意補充","correct":false}, {"text":"完全不補","correct":false}, {"text":"僅補糖","correct":false} ], "explain": "精準補足形成人的差異化" }
+  ]
+}

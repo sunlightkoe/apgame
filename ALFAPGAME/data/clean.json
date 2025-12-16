@@ -1,0 +1,17 @@
+{
+  "简单": [
+    { "q": "昕悅活力飲的主打作用是提升活力？", "choices": [ {"text":"提升活力","correct":true}, {"text":"僅補水","correct":false}, {"text":"僅助睡眠","correct":false}, {"text":"僅降溫","correct":false} ], "explain": "多重維他命配方，有助日常活力補給" },
+    { "q": "極淨纖果粉與腸道清潔有關？", "choices": [ {"text":"與腸道清潔相關","correct":true}, {"text":"僅增甜","correct":false}, {"text":"僅增色","correct":false}, {"text":"與消化無關","correct":false} ], "explain": "膳食纖維與多酚支持腸道代謝與排空" },
+    { "q": "清階段主要朝向排除負擔？", "choices": [ {"text":"排除身體負擔","correct":true}, {"text":"增加熱量","correct":false}, {"text":"僅增加水分","correct":false}, {"text":"隨意飲食","correct":false} ], "explain": "清著重減少體內負擔與環境調理" }
+  ],
+  "挑战": [
+    { "q": "纖果粉主要來源為多種果蔬纖維？", "choices": [ {"text":"多種果蔬纖維","correct":true}, {"text":"純糖","correct":false}, {"text":"純脂肪","correct":false}, {"text":"僅水分","correct":false} ], "explain": "多源纖維與植物萃取形成清配方" },
+    { "q": "活力飲是否含維生素B群？", "choices": [ {"text":"含維生素B群可能性高","correct":true}, {"text":"完全不含","correct":false}, {"text":"僅含脂溶性維生素","correct":false}, {"text":"僅含電解質","correct":false} ], "explain": "配方著重日常活力與代謝支持" },
+    { "q": "清階段是否建議晚間使用為主？", "choices": [ {"text":"依個人而定","correct":true}, {"text":"只可晚間","correct":false}, {"text":"只可早晨","correct":false}, {"text":"任何時段都不可","correct":false} ], "explain": "依個人作息與需求調整" }
+  ],
+  "专业": [
+    { "q": "清階段主要機制含抗氧化與代謝支持？", "choices": [ {"text":"抗氧化與代謝支持","correct":true}, {"text":"僅補水","correct":false}, {"text":"僅增酸","correct":false}, {"text":"僅增甜","correct":false} ], "explain": "多酚、纖維與微量元素協同" },
+    { "q": "活力飲之劑型利於行動使用？", "choices": [ {"text":"利於行動使用","correct":true}, {"text":"僅適合靜態","correct":false}, {"text":"須冷凍方可使用","correct":false}, {"text":"嚴禁攜帶外出","correct":false} ], "explain": "便攜且口感友好" },
+    { "q": "清與調之銜接重點在腸道環境？", "choices": [ {"text":"腸道環境優化","correct":true}, {"text":"增加鹽分","correct":false}, {"text":"減少維生素","correct":false}, {"text":"移除所有纖維","correct":false} ], "explain": "銜接以腸道環境優化為核心" }
+  ]
+}
