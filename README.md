@@ -475,7 +475,7 @@
                 level: "第四關：塑形神殿 (朔)", levelColor: "var(--color-shape)",
                 product: "Spork 閃朔奶茶飲", // 🚨 修正：朔奶茶飲 改為 閃朔奶茶飲
                 enemy: "腹部堆積", animation: "☕",
-                imageFile: "shape2.png", 
+                imageFile: "shape2.jpg", 
                 question: "閃朔奶茶飲中特有的哪種成分，具有調節生理機能、減少腹部堆積的功效？",
                 options: ["綠咖啡萃取物", "藤黃果萃取物", "白藜蘆醇", "川芎萃取物"],
                 correct: 3, explanation: "✅ 正確！**川芎萃取物**能調節生理機能，減少腹部堆積，幫助身體輕盈不卡水。"
