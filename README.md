@@ -1,9 +1,9 @@
-<亞健康公主變黑變胖了,需要你來拯救!>
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>愛樂唯：騎士的拯救公主之旅 (計時挑戰)</title>
+    <title>愛樂唯：騎士的體內淨化之旅 (計時挑戰)</title>
     <style>
         /* CSS 樣式 */
         :root {
@@ -211,7 +211,7 @@
             簡單 (10 題 / 100 分) - 虹光之路
         </button>
         <button class="btn difficulty-btn" onclick="startGame('medium')">
-            挑戰 (15 題 / 150 分) - 極光之路
+            有挑戰 (15 題 / 150 分) - 極光之路
         </button>
         <button class="btn difficulty-btn" onclick="startGame('hard')">
             專業 (20 題 / 200 分) - 日光之路
@@ -274,6 +274,8 @@
             // 專業級：從每個分類多抽，確保總數達到 20 題
             draw: { 'clear': 5, 'adjust': 5, 'supplement': 6, 'shape': 2, 'final': 2 }
         }
+    };
+
     // --- 擴充的完整題目庫 (FULL QUESTION BANK) ---
     // 總共 20 題 (清x5, 調x5, 補x6, 朔x2, Final x2)
     const fullQuestionBank = {
