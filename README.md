@@ -256,7 +256,7 @@
             簡單 (10 題 / 100 分) - 虹光之路
         </button>
         <button class="btn difficulty-btn" onclick="startGame('medium')">
-            有挑戰 (15 題 / 150 分) - 極光之路
+            挑戰 (15 題 / 150 分) - 極光之路
         </button>
         <button class="btn difficulty-btn" onclick="startGame('hard')">
             專業 (20 題 / 200 分) - 日光之路
