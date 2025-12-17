@@ -1,4 +1,4 @@
-<!公主怎麼了?快來拯救她!>
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
