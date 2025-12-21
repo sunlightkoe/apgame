@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>愛樂唯：傳奇騎士的誕生</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #2b2d42 0%, #8d99ae 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        /* 標題區（Logo + 標題） */
+        .title-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        /* Logo 呼吸發光效果 */
+        .energy-logo {
+            width: 55px; /* 調整至與盾牌 emoji 差不多大 */
+            height: 55px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+            animation: logo-breathing 3s ease-in-out infinite;
+        }
+
+        @keyframes logo-breathing {
+            0% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.4));
+            }
+            50% {
+                transform: scale(1.1);
+                filter: drop-shadow(0 0 20px rgba(255, 223, 100, 0.8));
+            }
+            100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.4));
+            }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        
+        /* 網格選單 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 30px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .icon { font-size: 3rem; margin-bottom: 15px; }
+        .card-title { font-size: 1.4rem; font-weight: bold; margin-bottom: 10px; }
+        .card-desc { 
+            font-size: 0.9rem; 
+            opacity: 0.8; 
+            text-align: center; 
+            line-height: 1.5;
+        }
+
+        /* 各區塊顏色邊框 */
+        .card-product { border-color: #4ea8de; }
+        .card-company { border-color: #f72585; }
+        .card-system  { border-color: #f48c06; }
+        .card-plan    { border-color: #2a9d8f; }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .title-wrapper { gap: 10px; }
+            .energy-logo { width: 40px; height: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="title-wrapper">
+        <img src="3030.png" alt="愛樂唯 Logo" class="energy-logo">
+        <h1>🛡️ 愛樂唯：日光騎士的誕生</h1>
+    </div>
+
+    <p>選擇你的修練場，掌握健康與財富的鑰匙！</p>
+
+    <div class="grid">
+        <a href="product.html" class="card card-product">
+            <div class="icon">🍎</div>
+            <div class="card-title">產品修練場</div>
+            <div class="card-desc">掌握【清調補朔】<br>拯救亞健康公主</div>
+        </a>
+
+        <a href="company.html" class="card card-company">
+            <div class="icon">城堡</div>
+            <div class="card-title">王國起源 (公司)</div>
+            <div class="card-desc">了解愛樂唯的<br>核心理念與趨勢</div>
+        </a>
+
+        <a href="business.html" class="card card-system">
+            <div class="icon">💰</div>
+            <div class="card-title">財富地圖 (制度)</div>
+            <div class="card-desc">解鎖獎金計畫<br>開啟你的被動收入</div>
+        </a>
+
+        <a href="plan.html" class="card card-plan">
+            <div class="icon">📜</div>
+            <div class="card-title">騎士試煉 (90天)</div>
+            <div class="card-desc">行動計畫指南<br>邁向傳奇巔峰之路</div>
+        </a>
+    </div>
+</div>
+
+</body>
+</html>
