@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>愛樂唯：王國起源 (公司篇 - 完整版)</title>
+    <style>
+        :root { 
+            --color-primary: #f72585; 
+            --color-bg: #ffe4e6; 
+            --color-correct: #d4edda;
+            --color-wrong: #f8d7da;
+        }
+        body { 
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; 
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            padding: 20px; 
+        }
+        .game-container { 
+            background: white; 
+            width: 100%; 
+            max-width: 600px; 
+            border-radius: 20px; 
+            padding: 30px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+            text-align: center; 
+            position: relative;
+        }
+        /* 進度條 */
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: #eee;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--color-primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .btn { 
+            background: var(--color-primary); 
+            color: white; 
+            border: none; 
+            padding: 12px 24px; 
+            border-radius: 50px; 
+            font-size: 1.1rem; 
+            cursor: pointer; 
+            margin: 10px 0; 
+            width: 100%; 
+            transition: all 0.2s;
+        }
+        .btn:hover { opacity: 0.9; transform: scale(1.02); }
+        .btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+        
+        .hidden { display: none; }
+        .option-btn { background: #f8f9fa; color: #333; border: 2px solid #eee; text-align: left; padding-left: 20px; }
+        .option-btn:hover { background: #f0f0f0; border-color: var(--color-primary); }
+        
+        .feedback { margin-top: 20px; padding: 15px; border-radius: 10px; text-align: left; animation: fadeIn 0.5s; }
+        .feedback.correct { background: var(--color-correct); color: #155724; }
+        .feedback.wrong { background: var(--color-wrong); color: #721c24; }
+        
+        .home-btn { background: #333; margin-top: 20px; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1 { color: #d63384; }
+        .question-number { font-weight: bold; color: var(--color-primary); margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <div id="startScreen">
+        <div style="font-size: 4rem;">🏰</div>
+        <h1>王國起源</h1>
+        <p>探索愛樂唯的創立初衷與大健康趨勢<br>共計 11 題挑戰</p>
+        <button class="btn" onclick="startGame()">開始探索</button>
+        <a href="index.html" style="text-decoration: none;"><button class="btn home-btn">回大廳</button></a>
+    </div>
+
+    <div id="gameScreen" class="hidden">
+        <div class="progress-container">
+            <div id="progressBar" class="progress-bar"></div>
+        </div>
+        <div class="question-number" id="qNumDisplay">Question 1</div>
+        <div style="font-size: 2.5rem; margin-bottom: 10px;" id="animIcon">🏢</div>
+        <h2 id="questionText">題目載入中...</h2>
+        
+        <div id="optionsContainer"></div>
+
+        <div id="feedbackArea" class="hidden">
+            <p id="feedbackText"></p>
+            <button class="btn" onclick="nextQuestion()">下一題</button>
+        </div>
+    </div>
+
+    <div id="resultScreen" class="hidden">
+        <div style="font-size: 4rem;">🎉</div>
+        <h2>探索完成！</h2>
+        <p id="finalScore" style="font-size: 1.5rem; font-weight: bold;"></p>
+        <p id="evaluationText"></p>
+        <a href="index.html" style="text-decoration: none;"><button class="btn home-btn">返回大廳</button></a>
+        <button class="btn" onclick="location.reload()" style="background: #6c757d;">重新挑戰</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            q: "現代人面臨的最大健康挑戰，除了人口老化外，還有什麼現象？",
+            options: ["營養過剩", "亞健康狀態", "睡眠過多", "運動過度"],
+            correct: 1,
+            desc: "✅ 正確！**亞健康**是現代人普遍處於「沒病但身體不適」的狀態，預防至關重要。"
+        },
+        {
+            q: "愛樂唯(Alfawise)的核心健康理念是哪四個字？",
+            options: ["吃喝玩樂", "清調補朔", "生老病死", "輕斷食法"],
+            correct: 1,
+            desc: "✅ 正確！**【清．調．補．朔】**是愛樂唯獨創的循環健康方程式。"
+        },
+        {
+            q: "愛樂唯的企業願景是希望讓健康變得如何？",
+            options: ["更昂貴", "更複雜", "更簡單", "更困難"],
+            correct: 2,
+            desc: "✅ 正確！我們的口號是**「讓健康更簡單」**，這也是品牌的研發核心。"
+        },
+        {
+            q: "在「清調補朔」的理念中，「清」代表的是什麼？",
+            options: ["補充營養", "清除負擔/淨化", "調整體質", "塑造身形"],
+            correct: 1,
+            desc: "✅ 正確！「清」是基礎，代表**清除體內代謝廢物與負擔**，打通健康通道。"
+        },
+        {
+            q: "愛樂唯的產品策略是採用什麼標準來確保效能？",
+            options: ["便宜就好", "國際專利原料與科學實證", "包裝精美為主", "只在網路銷售"],
+            correct: 1,
+            desc: "✅ 正確！我們堅持使用具備**科學數據與專利認證**的原料，確保安全有效。"
+        },
+        {
+            q: "Alfawise 名稱中的「Wise」代表智慧，而「Alfa」則寓意什麼？",
+            options: ["第一、領先", "古老、傳統", "快速、便捷", "廉價、平民"],
+            correct: 0,
+            desc: "✅ 正確！**Alfa (Alpha)** 代表第一、領軍，象徵愛樂唯要在健康產業做到頂尖。"
+        },
+        {
+            q: "關於「大健康」趨勢，未來的醫療重心正從「治已病」轉向什麼？",
+            options: ["治急病", "治未病 (預防保健)", "增加藥量", "減少運動"],
+            correct: 1,
+            desc: "✅ 正確！**「治未病」**即是預防醫學的核心，在疾病發生前就維持身體平衡。"
+        },
+        {
+            q: "「清調補朔」中的「調」是指調節身體的什麼？",
+            options: ["調節房貸", "調節生理機能與平衡", "調節室內溫度", "調節飲食熱量"],
+            correct: 1,
+            desc: "✅ 正確！**「調」**是指透過植萃營養幫助身體恢復原本的平衡與運作機能。"
+        },
+        {
+            q: "「清調補朔」中的「補」強調的是什麼樣的補充方式？",
+            options: ["亂補一通", "愈貴愈好", "精準補充所需營養", "每日攝取萬卡熱量"],
+            correct: 2,
+            desc: "✅ 正確！**「補」**必須精準，針對細胞與身體缺少的關鍵營養進行補充。"
+        },
+        {
+            q: "「清調補朔」的最後一環「朔」，其最終目的是什麼？",
+            options: ["購買新衣服", "重塑健康基石與年輕體態", "學習攝影技巧", "練習寫字"],
+            correct: 1,
+            desc: "✅ 正確！**「朔」**代表重塑與鞏固，讓身體回到充滿活力與健康的理想狀態。"
+        },
+        {
+            q: "愛樂唯創立的初衷，是結合「科學、天然與智慧」來解決什麼問題？",
+            options: ["現代人的健康危機", "電腦軟體更新", "交通擁塞", "全球通膨"],
+            correct: 0,
+            desc: "✅ 正確！愛樂唯致力於解決**現代環境下造成的健康危機**，讓每個人都能自主健康管理。"
+        }
+    ];
+
+    let currentIdx = 0;
+    let score = 0;
+
+    function startGame() {
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('gameScreen').classList.remove('hidden');
+        showQuestion();
+    }
+
+    function showQuestion() {
+        let q = questions[currentIdx];
+        
+        // 更新進度條與題號
+        const progress = ((currentIdx) / questions.length) * 100;
+        document.getElementById('progressBar').style.width = `${progress}%`;
+        document.getElementById('qNumDisplay').textContent = `第 ${currentIdx + 1} 題 / 共 ${questions.length} 題`;
+        
+        document.getElementById('questionText').textContent = q.q;
+        document.getElementById('feedbackArea').classList.add('hidden');
+        
+        let container = document.getElementById('optionsContainer');
+        container.innerHTML = '';
+        
+        q.options.forEach((opt, idx) => {
+            let btn = document.createElement('button');
+            btn.className = 'btn option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkAnswer(idx);
+            container.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(idx) {
+        let q = questions[currentIdx];
+        let feedback = document.getElementById('feedbackArea');
+        let text = document.getElementById('feedbackText');
+        
+        feedback.classList.remove('hidden');
+        
+        // 禁用按鈕
+        let btns = document.querySelectorAll('.option-btn');
+        btns.forEach(b => b.disabled = true);
+
+        if(idx === q.correct) {
+            score++;
+            feedback.className = 'feedback correct';
+            text.innerHTML = `<strong>太棒了！</strong><br>${q.desc}`;
+        } else {
+            feedback.className = 'feedback wrong';
+            text.innerHTML = `<strong>再接再厲！</strong><br>正確答案是「${q.options[q.correct]}」。<br>${q.desc}`;
+        }
+    }
+
+    function nextQuestion() {
+        currentIdx++;
+        if(currentIdx < questions.length) {
+            showQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('progressBar').style.width = `100%`;
+        document.getElementById('gameScreen').classList.add('hidden');
+        document.getElementById('resultScreen').classList.remove('hidden');
+        
+        const finalScoreText = `您的得分：${score} / ${questions.length}`;
+        document.getElementById('finalScore').textContent = finalScoreText;
+
+        let eval = "";
+        if(score === questions.length) eval = "太強了！您已經是愛樂唯的王國導師！👑";
+        else if(score >= 8) eval = "非常優秀！您對公司理念有著深刻的理解。✨";
+        else if(score >= 5) eval = "不錯喔！繼續探索，健康王國的大門為您敞開。🛡️";
+        else eval = "沒關係，再來挑戰一次，深化您的健康知識吧！🌱";
+        
+        document.getElementById('evaluationText').textContent = eval;
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>愛樂唯：財富地圖 (制度篇)</title>
+    <style>
+        /* 制度篇使用金色/橘色系 */
+        :root { --color-primary: #f48c06; }
+        body { font-family: sans-serif; background: linear-gradient(135deg, #fceabb 0%, #f8b500 100%); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; }
+        .game-container { background: white; width: 100%; max-width: 600px; border-radius: 20px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; }
+        .btn { background: var(--color-primary); color: white; border: none; padding: 12px 24px; border-radius: 50px; font-size: 1.1rem; cursor: pointer; margin: 10px; width: 100%; max-width: 300px; }
+        .btn:hover { opacity: 0.9; transform: scale(1.02); }
+        .hidden { display: none; }
+        .option-btn { background: #fff8e1; color: #333; border: 2px solid #f48c06; }
+        .feedback { margin-top: 20px; padding: 15px; border-radius: 10px; text-align: left; }
+        .feedback.correct { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        .feedback.wrong { background: #f8d7da; color: #721c24; }
+        .home-btn { background: #333; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <div id="startScreen">
+        <h1>💎 財富地圖</h1>
+        <p>解鎖被動收入的秘密，建立你的商業管道</p>
+        <button class="btn" onclick="startGame()">尋找寶藏</button>
+        <a href="index.html"><button class="btn home-btn">回大廳</button></a>
+    </div>
+
+    <div id="gameScreen" class="hidden">
+        <div style="font-size: 3rem; margin-bottom: 10px;" id="animIcon">💰</div>
+        <h2 id="questionText">題目...</h2>
+        <div id="optionsContainer"></div>
+        <div id="feedbackArea" class="hidden">
+            <p id="feedbackText"></p>
+            <button class="btn" onclick="nextQuestion()">下一題</button>
+        </div>
+    </div>
+
+    <div id="resultScreen" class="hidden">
+        <h2>🎉 寶藏解鎖！</h2>
+        <p id="finalScore"></p>
+        <a href="index.html"><button class="btn home-btn">返回大廳</button></a>
+    </div>
+</div>
+
+<script>
+    // 根據 PDF (事業篇) 內容萃取的制度題庫
+    const questions = [
+        {
+            q: "愛樂唯的商業模式是屬於哪種類型？",
+            options: ["傳統推銷員", "分享經濟與倍增市場", "打卡上班族", "高風險投資"],
+            correct: 1,
+            desc: "✅ 正確！這是**分享經濟**，透過分享好產品建立團隊，享受倍增的成果。"
+        },
+        {
+            q: "關於「管道收入」(被動收入) 的描述，下列何者正確？",
+            options: ["有做才有錢，沒做沒錢", "建立系統後，即使休息也有收入", "完全不需要努力", "只適合有錢人"],
+            correct: 1,
+            desc: "✅ 正確！就像接水管一樣，**建立系統後**能享有持續性的收入。"
+        },
+        {
+            q: "加入愛樂唯事業的門檻通常是？",
+            options: ["需要幾百萬資金", "低門檻、低風險", "需要專業執照", "需要辭掉原本工作"],
+            correct: 1,
+            desc: "✅ 正確！這是一個**低門檻、低風險**的微創業機會。"
+        },
+        {
+            q: "在愛樂唯的獎金制度中，除了個人的銷售外，還可以獲得什麼？",
+            options: ["只有贈品", "團隊輔導與組織獎金", "固定底薪", "公司股份"],
+            correct: 1,
+            desc: "✅ 正確！你可以獲得**團隊組織發展**帶來的多重獎金。"
+        }
+    ];
+
+    let currentIdx = 0;
+    let score = 0;
+
+    function startGame() {
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('gameScreen').classList.remove('hidden');
+        showQuestion();
+    }
+
+    function showQuestion() {
+        let q = questions[currentIdx];
+        document.getElementById('questionText').textContent = q.q;
+        document.getElementById('feedbackArea').classList.add('hidden');
+        
+        let container = document.getElementById('optionsContainer');
+        container.innerHTML = '';
+        
+        q.options.forEach((opt, idx) => {
+            let btn = document.createElement('button');
+            btn.className = 'btn option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkAnswer(idx);
+            container.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(idx) {
+        let q = questions[currentIdx];
+        let feedback = document.getElementById('feedbackArea');
+        let text = document.getElementById('feedbackText');
+        
+        feedback.classList.remove('hidden');
+        
+        let btns = document.querySelectorAll('.option-btn');
+        btns.forEach(b => b.disabled = true);
+
+        if(idx === q.correct) {
+            score++;
+            feedback.className = 'feedback correct';
+            text.textContent = q.desc;
+        } else {
+            feedback.className = 'feedback wrong';
+            text.textContent = "❌ 答錯了！" + q.desc;
+        }
+    }
+
+    function nextQuestion() {
+        currentIdx++;
+        if(currentIdx < questions.length) {
+            showQuestion();
+        } else {
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('resultScreen').classList.remove('hidden');
+            document.getElementById('finalScore').textContent = `您的財商指數：${score} / ${questions.length}`;
+        }
+    }
+</script>
+</body>
+</html>

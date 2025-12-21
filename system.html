@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>愛樂唯：財富地圖 (制度與獎金篇)</title>
+    <style>
+        :root { 
+            --color-primary: #f48c06; 
+            --color-secondary: #ffba08;
+            --color-bg: #fffcf2; 
+        }
+        
+        body { 
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; 
+            background: linear-gradient(135deg, #fceabb 0%, #f8b500 100%); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            padding: 20px; 
+        }
+
+        .game-container { 
+            background: white; 
+            width: 100%; 
+            max-width: 600px; 
+            border-radius: 20px; 
+            padding: 30px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); 
+            text-align: center; 
+        }
+
+        .progress-wrapper {
+            width: 100%;
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--color-primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .btn { 
+            background: var(--color-primary); 
+            color: white; 
+            border: none; 
+            padding: 12px 24px; 
+            border-radius: 50px; 
+            font-size: 1.1rem; 
+            cursor: pointer; 
+            margin: 10px 0; 
+            width: 100%; 
+            max-width: 400px; 
+            transition: 0.3s;
+        }
+        .btn:hover { background: #e85d04; transform: scale(1.02); }
+        .btn:disabled { background: #ccc; cursor: not-allowed; }
+
+        .hidden { display: none; }
+        
+        .option-btn { 
+            background: #fff8e1; 
+            color: #333; 
+            border: 2px solid #f48c06; 
+            text-align: left;
+            padding-left: 25px;
+        }
+        .option-btn:hover { background: #ffefc1; }
+
+        .feedback { 
+            margin-top: 20px; 
+            padding: 15px; 
+            border-radius: 10px; 
+            text-align: left; 
+            line-height: 1.6;
+            animation: slideIn 0.4s ease-out;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feedback.correct { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        .feedback.wrong { background: #f8d7da; color: #721c24; }
+        
+        .home-btn { background: #333; margin-top: 20px; }
+        .q-info { color: #f48c06; font-weight: bold; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <div id="startScreen">
+        <div style="font-size: 4rem; margin-bottom: 10px;">💎</div>
+        <h1>財富地圖</h1>
+        <p>解鎖被動收入與獎金計畫的秘密<br>(完整挑戰：16 題)</p>
+        <button class="btn" onclick="startGame()">尋找寶藏</button>
+        <a href="index.html" style="text-decoration: none;"><button class="btn home-btn">回大廳</button></a>
+    </div>
+
+    <div id="gameScreen" class="hidden">
+        <div class="progress-wrapper">
+            <div id="progressBar" class="progress-bar"></div>
+        </div>
+        <div class="q-info" id="qNum">第 1 題</div>
+        <div style="font-size: 3rem; margin-bottom: 10px;" id="animIcon">💰</div>
+        <h2 id="questionText">題目載入中...</h2>
+        
+        <div id="optionsContainer"></div>
+
+        <div id="feedbackArea" class="hidden">
+            <p id="feedbackText"></p>
+            <button class="btn" onclick="nextQuestion()">下一題</button>
+        </div>
+    </div>
+
+    <div id="resultScreen" class="hidden">
+        <div style="font-size: 4rem;">🏆</div>
+        <h2>探索完成！</h2>
+        <p id="finalScore" style="font-size: 1.4rem; font-weight: bold;"></p>
+        <p id="rankText"></p>
+        <a href="index.html" style="text-decoration: none;"><button class="btn home-btn">返回大廳</button></a>
+        <button class="btn" onclick="location.reload()" style="background: #6c757d; margin-top: 10px;">重新挑戰</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            q: "愛樂唯的商業模式是屬於哪種類型？",
+            options: ["傳統推銷員", "分享經濟與倍增市場", "打卡上班族", "高風險投資"],
+            correct: 1,
+            desc: "✅ 正確！透過分享好產品建立團隊，享受倍增成果。"
+        },
+        {
+            q: "關於「管道收入」(被動收入) 的描述，下列何者正確？",
+            options: ["有做才有錢", "建立系統後，即使休息也有收入", "完全不需要努力", "只適合有錢人"],
+            correct: 1,
+            desc: "✅ 正確！系統建立後能享有持續性、自動化的收入。"
+        },
+        {
+            q: "加入愛樂唯事業的門檻通常是？",
+            options: ["需要幾百萬資金", "低門檻、低風險", "需要專業執照", "需辭掉工作"],
+            correct: 1,
+            desc: "✅ 正確！這是一個低門檻、低風險的微創業機會。"
+        },
+        {
+            q: "在愛樂唯獎金制度中，除了個人銷售，還能獲得？",
+            options: ["只有贈品", "其他四大獎金", "固定時薪", "免費午餐"],
+            correct: 1,
+            desc: "✅ 正確！可以獲得團隊組織發展帶來的多重獎金。"
+        },
+        {
+            q: "愛樂唯如何實現「全球連線」的事業願景？",
+            options: ["台灣第一站逐步全球", "必須親自飛往海外", "只能在台灣經營", "靠寫信聯繫"],
+            correct: 0,
+            desc: "✅ 正確！穩扎穩打跟著日光團隊跟著就能做全球生意。"
+        },
+        {
+            q: "經營愛樂唯事業，「時間槓桿」的意義在於？",
+            options: ["每天工作24小時", "利用團隊合作倍增時間效能", "買很多鐘錶", "減少睡眠"],
+            correct: 1,
+            desc: "✅ 正確！透過組織倍增，產生超越個人的時間效益。"
+        },
+        {
+            q: "愛樂唯的獎金結算週期特色通常是？",
+            options: ["一年發一次", "五年後才領", "結算快速、領取及時" , "看老闆心情"],
+            correct: 2,
+            desc: "✅ 正確！高效結算系統，讓努力快速獲得回報。"
+        },
+        {
+            q: "為什麼愛樂唯事業被稱為「可繼承的事業」？",
+            options: ["把產品留給後代", "公司很老了", "產品不過期", "組織收益可以傳承給下一代"],
+            correct: 3,
+            desc: "✅ 正確！努力成果具備繼承權，守護家人的財富資產。"
+        },
+        {
+            q: "在建立愛樂唯事業過程中，最重要的動作是？",
+            options: ["不斷自費囤貨", "真心體驗、分享、帶領夥伴", "強迫鄰居購買", "每天去公司打卡"],
+            correct: 1,
+            desc: "✅ 正確！體驗與分享是核心，建立在互助合作上。"
+        },
+        {
+            q: "愛樂唯如何降低創業者的風險？",
+            options: ["由公司負責研發、物流與行政後台", "讓創業者自己蓋工廠", "要求借錢創業", "不提供產品教育"],
+            correct: 0,
+            desc: "✅ 正確！公司提供強大的後勤支持，讓你專注於市場。"
+        },
+        {
+            q: "成功的財富地圖中，最關鍵的特質是？",
+            options: ["單打獨鬥", "持續學習並複製成功的系統", "等待幸運降臨", "找最便宜的產品賣"],
+            correct: 1,
+            desc: "✅ 正確！複製系統是成功的捷徑。"
+        },
+        // --- 新增獎金細節題 ---
+        {
+            q: "愛樂唯獎金結算時，所採用的美金對台幣匯率是多少？",
+            options: ["1 : 28", "1 : 30", "1 : 32", "1 : 35"],
+            correct: 1,
+            desc: "✅ 正確！根據制度手冊，愛樂唯獎金結算匯率固定為 **1 : 30** 。"
+        },
+        {
+            q: "優惠顧客購買產品時，自己可獲得多少百分比的「自我回饋」折扣金？",
+            options: ["5% 積分", "10% 積分", "15% 積分", "20% 積分"],
+            correct: 2,
+            desc: "✅ 正確！購買積分(PV)的 **15%** 會作為折扣金回饋，讓下次購物更划算 。"
+        },
+        {
+            q: "「代理推薦獎金第一代」的提撥比例是多少？",
+            options: ["訂單PV 10%", "訂單PV 20%", "訂單PV 15%", "訂單PV 40%"],
+            correct: 2,
+            desc: "✅ 正確！直接推薦時，訂單PV享有 **15%** 的推薦獎金 [cite: 8]。"
+        },
+        {
+            q: "關於週獎金發放週期，每個月 1 號到 7 號產生的獎金，會在何時發放？",
+            options: ["次月 1 號", "次月 8 號", "次月 15 號", "次月 25 號"],
+            correct: 0,
+            desc: "✅ 正確！第1週獎金於**次月1號**發放；第2週於8號，依此類推 [cite: 6]。"
+        },
+        {
+            q: "在「達成獎金」中，全部達成一共可以領到新台幣約？",
+            options: ["988萬", "1414萬", "2266萬", "4487萬"],
+            correct: 3,
+            desc: "✅ 正確！達成獎金共11階 ，加總共約新台幣4487萬[cite: 8]。"
+        }
+    ];
+
+    let currentIdx = 0;
+    let score = 0;
+
+    function startGame() {
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('gameScreen').classList.remove('hidden');
+        showQuestion();
+    }
+
+    function showQuestion() {
+        let q = questions[currentIdx];
+        const progress = ((currentIdx) / questions.length) * 100;
+        document.getElementById('progressBar').style.width = `${progress}%`;
+        document.getElementById('qNum').textContent = `第 ${currentIdx + 1} 題 / 共 ${questions.length} 題`;
+        document.getElementById('questionText').textContent = q.q;
+        document.getElementById('feedbackArea').classList.add('hidden');
+        
+        let container = document.getElementById('optionsContainer');
+        container.innerHTML = '';
+        
+        q.options.forEach((opt, idx) => {
+            let btn = document.createElement('button');
+            btn.className = 'btn option-btn';
+            btn.textContent = opt;
+            btn.onclick = () => checkAnswer(idx);
+            container.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(idx) {
+        let q = questions[currentIdx];
+        let feedback = document.getElementById('feedbackArea');
+        let text = document.getElementById('feedbackText');
+        feedback.classList.remove('hidden');
+        let btns = document.querySelectorAll('.option-btn');
+        btns.forEach(b => b.disabled = true);
+
+        if(idx === q.correct) {
+            score++;
+            feedback.className = 'feedback correct';
+            text.innerHTML = `⭐ <strong>財商覺醒！</strong><br>${q.desc}`;
+        } else {
+            feedback.className = 'feedback wrong';
+            text.innerHTML = `❌ <strong>再接再厲！</strong><br>正確答案：${q.options[q.correct]}。<br>${q.desc}`;
+        }
+    }
+
+    function nextQuestion() {
+        currentIdx++;
+        if(currentIdx < questions.length) {
+            showQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('progressBar').style.width = `100%`;
+        document.getElementById('gameScreen').classList.add('hidden');
+        document.getElementById('resultScreen').classList.remove('hidden');
+        document.getElementById('finalScore').textContent = `您的財商指數：${score} / ${questions.length}`;
+        
+        let rank = "";
+        if(score === questions.length) rank = "【愛樂唯金牌大師】您已精通所有獎金計畫，準備大展身手！💎";
+        else if(score >= 12) rank = "【資深財富顧問】您對制度細節瞭若指掌，具備領導潛力！🚀";
+        else if(score >= 8) rank = "【準代理人】您已掌握基本概念，繼續加油深化知識。🌱";
+        else rank = "【財富探索者】獎金密碼還藏在細節裡，再挑戰一次吧！";
+        
+        document.getElementById('rankText').textContent = rank;
+    }
+</script>
+</body>
+</html>
